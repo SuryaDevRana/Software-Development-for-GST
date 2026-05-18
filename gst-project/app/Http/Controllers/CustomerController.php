@@ -34,6 +34,7 @@ class CustomerController extends Controller
         'name' => 'required|string|max:255',
         'gstin' => 'required|string|size:15',
         'address' => 'required|string',
+            'state' => 'required|string|max:100',
         'phone' => 'required|string|max:20',
     ]);
 
@@ -66,6 +67,7 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'gstin' => 'required|string|size:15',
             'address' => 'required|string',
+            'state' => 'required|string|max:100',
             'phone' => 'required|string|max:20',
         ]);
 

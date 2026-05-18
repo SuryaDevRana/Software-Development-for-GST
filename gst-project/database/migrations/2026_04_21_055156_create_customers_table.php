@@ -16,6 +16,7 @@ return new class extends Migration
         $table->string('name');
         $table->string('gstin')->nullable();
         $table->string('address');
+            $table->string('state');
         $table->string('phone')->nullable();
         $table->timestamps();
     });

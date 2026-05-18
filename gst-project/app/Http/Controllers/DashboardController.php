@@ -21,10 +21,10 @@ class DashboardController extends Controller
         $topCustomers = Customer::withCount('invoices')->orderByDesc('invoices_count')->take(4)->get();
 
         // New: Monthly Revenue Chart Data
-        $revenueData = Invoice::selectRaw('SUM(total) as amount, DATE_FORMAT(created_at, "%b") as month')
+        $revenueData = Invoice::selectRaw('SUM(total) as amount, DATE_FORMAT(created_at, "%m") as month_num, DATE_FORMAT(created_at, "%b") as month')
             ->whereYear('created_at', date('Y'))
-            ->groupBy('month')
-            ->orderByRaw('MIN(created_at)')
+            ->groupBy('month_num', 'month')
+            ->orderBy('month_num')
             ->get();
 
         return view('dashboard', compact(

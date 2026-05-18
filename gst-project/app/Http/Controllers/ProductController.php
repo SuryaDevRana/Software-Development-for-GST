@@ -15,6 +15,7 @@ public function store(Request $request)
 {
     $validated = $request->validate([
         'name' => 'required|string|max:255',
+            'hsn_code' => 'nullable|string|max:20',
         'price' => 'required|numeric|min:0',
         'gst_rate' => 'required|numeric|min:0',
     ]);
@@ -52,6 +53,7 @@ public function index()
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'hsn_code' => 'nullable|string|max:20',
             'price' => 'required|numeric|min:0',
             'gst_rate' => 'required|numeric|min:0',
         ]);

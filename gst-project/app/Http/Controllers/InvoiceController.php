@@ -38,7 +38,12 @@ class InvoiceController extends Controller
             'products.*.qty' => 'required|integer|min:1',
         ]);
 
-        return DB::transaction(function () use ($request) {
+        $customer = Customer::findOrFail($request->customer_id);
+        // Define your business registration state (e.g., 'Delhi')
+        $businessState = 'Delhi';
+        $isIntraState = strtolower($customer->state) === strtolower($businessState);
+
+        return DB::transaction(function () use ($request, $isIntraState) {
             $total = 0;
             $invoice = Invoice::create([
                 'customer_id' => $request->customer_id,
@@ -53,13 +58,25 @@ class InvoiceController extends Controller
                     $price = $product->price * $qty;
                     $gst = ($price * $product->gst_rate) / 100;
 
+                    $cgst = $sgst = $igst = 0;
+
+                    if ($isIntraState) {
+                        $cgst = $gst / 2;
+                        $sgst = $gst / 2;
+                    } else {
+                        $igst = $gst;
+                    }
+
                     $total += $price + $gst;
 
                     InvoiceItem::create([
                         'invoice_id' => $invoice->id,
                         'product_id' => $product->id,
                         'quantity' => $qty,
-                        'price' => $price
+                        'price' => $price,
+                        'cgst' => $cgst,
+                        'sgst' => $sgst,
+                        'igst' => $igst,
                     ]);
                 }
             }
