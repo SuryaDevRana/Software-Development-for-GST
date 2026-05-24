@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
@@ -35,7 +36,11 @@ class CustomerController extends Controller
             'gstin' => 'nullable|string|size:15',
             'address' => 'required|string',
             'phone' => 'nullable|string|max:20',
+            'email' => 'required|email|unique:customers,email',
+            'password' => 'required|string|min:8',
         ]);
+
+        $validated['password'] = Hash::make($validated['password']);
 
         Customer::create($validated);
         return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
@@ -67,7 +72,15 @@ class CustomerController extends Controller
             'gstin' => 'nullable|string|size:15',
             'address' => 'required|string',
             'phone' => 'nullable|string|max:20',
+            'email' => 'required|email|unique:customers,email,' . $customer->id,
+            'password' => 'nullable|string|min:8',
         ]);
+
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
 
         $customer->update($validated);
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');

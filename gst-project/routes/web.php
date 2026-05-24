@@ -41,6 +41,8 @@ Route::middleware('auth:customer')->prefix('portal')->name('customer.')->group(f
         $invoices = auth()->user()->invoices;
         return view('customer-portal.dashboard', compact('invoices'));
     })->name('dashboard');
+    Route::get('/products', [App\Http\Controllers\CustomerPortal\ProductController::class, 'index'])->name('products.index');
+    Route::get('/invoices', [App\Http\Controllers\CustomerPortal\InvoiceController::class, 'index'])->name('invoices.index');
     
     Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
 });
