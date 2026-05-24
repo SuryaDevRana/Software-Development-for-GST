@@ -29,18 +29,17 @@ class CustomerController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'gstin' => 'required|string|size:15',
-        'address' => 'required|string',
-            'state' => 'required|string|max:100',
-        'phone' => 'required|string|max:20',
-    ]);
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'gstin' => 'nullable|string|size:15',
+            'address' => 'required|string',
+            'phone' => 'nullable|string|max:20',
+        ]);
 
-    Customer::create($validated);
-    return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
-}
+        Customer::create($validated);
+        return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
+    }
 
     /**
      * Display the specified resource.
@@ -65,10 +64,9 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'gstin' => 'required|string|size:15',
+            'gstin' => 'nullable|string|size:15',
             'address' => 'required|string',
-            'state' => 'required|string|max:100',
-            'phone' => 'required|string|max:20',
+            'phone' => 'nullable|string|max:20',
         ]);
 
         $customer->update($validated);

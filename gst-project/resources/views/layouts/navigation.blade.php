@@ -13,17 +13,6 @@
                 </a>
             </div>
 
-            <!-- Command Palette Search (Cool UI Feature) -->
-            <div class="hidden xl:flex flex-1 max-w-md mx-8">
-                <button class="w-full flex items-center justify-between px-4 py-2 bg-slate-900/50 border border-white/5 rounded-xl text-slate-500 hover:text-slate-400 hover:border-white/10 transition-all group">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <span class="text-sm">Search invoices, clients...</span>
-                    </div>
-                    <kbd class="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 font-sans text-[10px] font-medium text-slate-400">⌘K</kbd>
-                </button>
-            </div>
-
             <div class="flex items-center gap-3 overflow-visible">
                 <div class="hidden lg:flex items-center gap-1">
                     <a href="{{ route('dashboard') }}" class="theme-nav-link {{ request()->routeIs('dashboard') ? 'theme-nav-link-active' : '' }}">

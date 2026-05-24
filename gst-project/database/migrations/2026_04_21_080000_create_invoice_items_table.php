@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('invoice_items', function (Blueprint $table) {
-    $table->id();
-    $table->unsignedBigInteger('invoice_id');
-    $table->unsignedBigInteger('product_id');
-    $table->integer('quantity');
-    $table->decimal('price', 10, 2);
+        Schema::create('invoice_items', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('product_id');
+            $table->integer('quantity');
+            $table->decimal('price', 10, 2);
             $table->decimal('cgst', 10, 2)->default(0);
             $table->decimal('sgst', 10, 2)->default(0);
             $table->decimal('igst', 10, 2)->default(0);
-    $table->timestamps();
+            $table->timestamps();
 
-    $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
-    $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-});
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+        });
     }
 
     /**
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('invoice_items');
     }
 };

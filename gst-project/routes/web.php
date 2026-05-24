@@ -35,4 +35,15 @@ Route::middleware('auth')->group(function () {
     ]);
 });
 
+// Customer Portal Routes
+Route::middleware('auth:customer')->prefix('portal')->name('customer.')->group(function () {
+    Route::get('/dashboard', function () {
+        $invoices = auth()->user()->invoices;
+        return view('customer-portal.dashboard', compact('invoices'));
+    })->name('dashboard');
+    
+    Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
+});
+
 require __DIR__.'/auth.php';
+require __DIR__.'/customer-auth.php';

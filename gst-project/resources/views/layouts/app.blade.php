@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="themeToggle()" x-init="init()" :class="{'dark': darkMode}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="themeToggle()" :class="{'dark': darkMode}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,11 +10,42 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        
+        <style>[x-cloak] { display: none !important; }</style>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            // Initialize theme immediately to prevent white flash before Alpine loads
+            (function() {
+                let isDark = false;
+                try {
+                    const savedTheme = localStorage.getItem('darkMode');
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    isDark = savedTheme === 'true' || (savedTheme === null && prefersDark);
+                } catch (e) { isDark = false; }
+
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            })();
+
+            function themeToggle() {
+                return {
+                    darkMode: document.documentElement.classList.contains('dark'),
+                    toggle() {
+                        this.darkMode = !this.darkMode;
+                        try {
+                            localStorage.setItem('darkMode', this.darkMode);
+                        } catch (e) {}
+                    }
+                }
+            }
+        </script>
     </head>
     <body class="font-sans antialiased site-shell">
         <div class="min-h-screen">
@@ -38,23 +69,5 @@
                 </div>
             </main>
         </div>
-
-        <script>
-            function themeToggle() {
-                return {
-                    darkMode: false,
-                    init() {
-                        const saved = localStorage.getItem('darkMode');
-                        this.darkMode = saved === 'true' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                        document.documentElement.classList.toggle('dark', this.darkMode);
-                    },
-                    toggle() {
-                        this.darkMode = !this.darkMode;
-                        localStorage.setItem('darkMode', this.darkMode);
-                        document.documentElement.classList.toggle('dark', this.darkMode);
-                    },
-                }
-            }
-        </script>
     </body>
 </html>
